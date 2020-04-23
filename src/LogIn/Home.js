@@ -27,9 +27,9 @@ function Home() {
     let renderSwitch = () => {
         switch (menuItemSelected) {
             case 'SignIn':
-                return (<SignIn />)
+                return (<SignIn/>)
             case 'LogIn':
-                return (<LogIn />)
+                return (<LogIn/>)
         }
     }
 

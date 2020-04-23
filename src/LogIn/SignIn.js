@@ -6,23 +6,14 @@ import Icon from '@material-ui/core/Icon';
 import './SignIn.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-
-
 import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
-import FilledInput from '@material-ui/core/FilledInput';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-
-
-
+import { Alert } from 'reactstrap';
 
 
 
@@ -42,13 +33,39 @@ function SignIn() {
   const classes = useStyles();
 
   //Boton submit del formulario
-  const submitInfo = (event) => {
+  const submitInfo = async(event) => {
     event.preventDefault();
-    if (data.contraseña === repeatpassword.repeatpassword && data.contraseña !== ""){
-      console.log('IGUALES')
-    }else{
-      console.log('DIFERENTES')
+    
+    await fetch('https://timetable-managment-backend.herokuapp.com/signIn',{
+      method: 'POST',
+      // mode: "no-cors",
+      headers:{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nombre: data.nombre,
+        primerApellido: data.primerApellido,
+        segundoApellido: data.segundoApellido,
+        correo: data.correo,
+        cargo: data.cargo,
+        contraseña: data.contraseña
+      })
+    })
+  }
+  //Array de checkEmptyFields
+  const [checkEmptyFields, setCheckEmptyFields] = useState([])
+  //Comprobamos que campos del formulario NO estan rellenos
+  let checkFillFields = () => {
+    setCheckEmptyFields([])
+    let prueba = []
+    for (const prop in data) {
+      if (data[prop] === ""){
+        prueba.push(prop)
+      }
     }
+    setCheckEmptyFields(prueba)
+    console.log(checkEmptyFields)
   }
   //Estado con los datos del formulario
   const [data, updateData] = useState({
@@ -63,10 +80,13 @@ function SignIn() {
   const [repeatpassword, setRepeatpassword] = useState({
     repeatpassword: ""
   })
+  //Estado de OK/KO contraseña para ver mensaje de error
+  const [checkPassword, setCheckPassword] = useState(true);
   //ver/ocultar contraseña
   const [viewPassword, setViewPassword] = useState(false);
   const eye = <FontAwesomeIcon icon={faEye} size="xs"/>
   const eyeSlash = <FontAwesomeIcon icon={faEyeSlash} size="xs"/>
+  
 
   return (
     <div className="SignIn">
@@ -75,27 +95,27 @@ function SignIn() {
           <div className="col-12">
             <TextField id="nombre" label="Nombre" type="text" name="nombre"
               value={data.nombre}
-              onChange={(event) => updateData({ ...data, nombre: event.target.value })} />
+              onChange={(event) => updateData({ ...data, nombre: event.target.value })} required/>
           </div>
           <div className="col-12">
             <TextField id="primerApellido" label="Primer apellido" type="text" name="primerApellido"
               value={data.primerApellido}
-              onChange={(event) => updateData({ ...data, primerApellido: event.target.value })} />
+              onChange={(event) => updateData({ ...data, primerApellido: event.target.value })} required/>
           </div>
           <div className="col-12">
             <TextField id="segundoApellido" label="Segundo apellido" type="text" name="segundoApellido"
               value={data.segundoApellido}
-              onChange={(event) => updateData({ ...data, segundoApellido: event.target.value })} />
+              onChange={(event) => updateData({ ...data, segundoApellido: event.target.value })} required/>
           </div>
           <div className="col-12">
             <TextField id="correo" label="Email" type="email" name="correo"
               value={data.correo}
-              onChange={(event) => updateData({ ...data, correo: event.target.value })} />
+              onChange={(event) => updateData({ ...data, correo: event.target.value })} required/>
           </div>
           <div className="col-12">
             <TextField id="cargo" label="Cargo" type="text" name="cargo"
               value={data.cargo}
-              onChange={(event) => updateData({ ...data, cargo: event.target.value })} />
+              onChange={(event) => updateData({ ...data, cargo: event.target.value })} required/>
           </div>
           <div className="col-12">
             <FormControl className={clsx(classes.margin, classes.textField)}>
@@ -149,6 +169,26 @@ function SignIn() {
             >
               Enviar
             </Button>
+          </div>
+          <div className="col-12">
+            {checkPassword != true &&
+              <Alert className="alert" color="danger">
+              Las contraseñas no coinciden
+            </Alert>
+            }
+          </div>
+          <div className="col-12">
+            {checkEmptyFields.length !== 0 &&
+              <Alert  className="alert" color="danger">
+                Rellena todos los campos
+              </Alert>}
+            {/* {checkEmptyFields.length !== 0 &&
+              <Alert color="danger">
+              te falta por rellenar:
+                {checkEmptyFields.map(x =>
+                  <p>{x}</p>)}
+              </Alert>
+            } */}
           </div>
         </div>
       </form>

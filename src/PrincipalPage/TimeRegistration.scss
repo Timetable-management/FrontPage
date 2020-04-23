@@ -1,0 +1,27 @@
+.timeRegistration {
+    & h5 {
+        margin: 0;
+    }
+
+    & .alignItems {
+        display: flex;
+        align-items: center;
+    }
+
+    & .clockIcon {
+        margin: 0 16px;
+    }
+
+    & .timeForm {
+        & .aligItems {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        & .alert {
+            font-size: x-small !important;
+        }
+    }
+
+}
