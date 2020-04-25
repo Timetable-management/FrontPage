@@ -13,6 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import MyContext from '../context';
 import './TimeRegistration.scss';
+import PropTypes from 'prop-types'
 
 
 function TimeRegistration() {
@@ -29,80 +30,141 @@ function TimeRegistration() {
             margin: theme.spacing(1),
         },
     }));
+    const classes = useStyles(); //MaterialUI classes
+    const clock = <FontAwesomeIcon icon={faClock} size="3x" color="#3F51B5" /> //Clock Icon
 
-    //Clock Icon
-    const clock = <FontAwesomeIcon icon={faClock} size="fa-3x" color="#3F51B5" />
-
-    //------START STATE:------
     const contextInfo = useContext(MyContext); //Global Context
-
-    //To get actual minutes and seconds
-    let date = new Date();
-
-    const [timeTable, setTimeTable] = useState({
-        startWorkHours: date.getHours(),
-        startWorkMinutes: date.getMinutes(),
-        startPauseHours: 0,
-        startPauseMinutes: 0,
-        stopPauseHours: 0,
-        stopPauseMinutes: 0,
-        stopWorkHours: 0,
-        stopWorkMinutes: 0
+    
+    //GLOBAL Cases Types
+    const type = Object.freeze({
+        Hora_de_entrada: 0,
+        Hora_de_salida: 1,
+        Hora_de_inicio_de_pausa: 2,
+        Hora_de_final_de_pausa: 3
     })
-    //------END STATE:------
+    //Translation cases
+    const typeToString = (type) => {
+        switch (type) {
+            case 0:
+                return 'Hora de entrada';
+            case 1:
+                return 'Hora de salida';
+            case 2:
+                return 'Hora de inicio de pausa';
+            case 3:
+                return 'Hora de final de pausa';
+        }
+    }
+    //Depending on the Type, Paint diferents buttons. Each button have it own function
+    const buttonCase = (type) => {
+        switch (type) {
+            case 0:
+                return (
+                    <div>
+                        <button onClick={()=> startPause()}>Inicio de pausa</button>
+                        <button onClick={() => endWork()}>Fin de trabajo</button>
+                    </div>
+                )
+            case 2:
+                return(
+                    <button onClick={() => endPause()}>Fin de pausa</button>
+                )
+            case 3:
+                return(
+                    <div>
+                        <button onClick={() => startPause()}>Inicio de pausa</button>
+                        <button onClick={() => endWork()}>Fin de trabajo</button>
+                    </div>
+                )
+        }
+    }
+    //BUTTONS FUNCTIONS 
+    //Button on startWork
+    let startWorking = () => {
+        setTimeTable([...timeTable, {
+            type: type.Hora_de_entrada,
+            dateTime: date
+        }])
+    }
+    let startPause = () =>{
+        setTimeTable([...timeTable, {
+            type: type.Hora_de_inicio_de_pausa,
+            dateTime: date
+        }])
+    }
+    let endWork = () => {
+        setTimeTable([...timeTable, {
+            type: type.Hora_de_salida,
+            dateTime: date
+        }])
+    }
+    let endPause = () => {
+        setTimeTable([...timeTable, {
+            type: type.Hora_de_final_de_pausa,
+            dateTime: date
+        }])
+    }
 
+    let date = new Date();//To get actual minutes and seconds
+    //Here we are going to push the input registers --> CONTEXT
+    const [timeTable, setTimeTable] = useState([
+        
+    ])
     //Copy the timeTable state to the context every time that this state change
     let updateComponentToContext = () => {
         contextInfo.setHooksState({ ...contextInfo.hooksState, timeTable })
     }
     useEffect(() => { updateComponentToContext() }, [timeTable]);
-    const classes = useStyles();
 
-    //Button on submit
-    let submitInfo = () => {
-        console.log('Formulario enviado')
+    //Edit time -> Function to change the hours of an input
+    let changeHours = (hourValue, index) => {
+        let array = [...timeTable];
+        array[index].dateTime.setHours(hourValue);
+        return array;
+    }
+    //Edit time -> Function to change the minutes of an input
+    let changeMinutes = (minuteValue, index) => {
+        let array = [...timeTable];
+        array[index].dateTime.setMinutes(minuteValue);
+        return array;
     }
 
     return (
         <div className="container-fluid timeRegistration">
-            <div className="row alignItems">
+            <div className="row titleSection">
                 <div className="clockIcon">{clock}</div>
                 <h5>GESTIÓN DE HORAS:</h5>
             </div>
-
-            <div className="row timeForm">
-                <form className={classes.root} noValidate autoComplete="off" onSubmit={(event) => submitInfo(event)} style={{ display: "flex" }}>
-                    <div className="col">
-                        <InputLabel htmlFor="Hora de entrada:">Hora de entrada:</InputLabel>
-                    </div>
-                    <div className="col">
-                        <TextField
-                            id="outlined-helperText"
-                            label="Hora"
-                            defaultValue={timeTable.startWorkHours}
-                            variant="outlined"
-                            onChange={(event) => setTimeTable({ ...timeTable, startWorkHours: event.target.value })} required />
-                    </div>
-                    <div className="col">
-                        <TextField
-                            id="outlined-helperText"
-                            label="Minutos"
-                            defaultValue={timeTable.startWorkMinutes}
-                            variant="outlined"
-                            onChange={(event) => setTimeTable({ ...timeTable, startWorkMinutes: event.target.value })} required />
-                    </div>
-
-                    {/* 
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        endIcon={<Icon>send</Icon>}
-                    >
-                        Enviar
-                    </Button> */}
-                </form>
+            <div className="timeForm">
+                {timeTable.length === 0 ? <p>Aun no tienes registros</p>
+                    : <form className={classes.root} noValidate autoComplete="off" style={{ display: "flex", flexDirection:"column" }}>
+                        {timeTable.map((register, index) =>
+                            <div className="row rowInput">
+                                <p className="typeRegistration">{typeToString(register.type)}</p>
+                                <div className="col-12 col-sm-2 alignInput">
+                                    <TextField
+                                        id="outlined-helperText"
+                                        label='Hora'
+                                        defaultValue={register.dateTime.getHours().toString().padStart(2, '0')}
+                                        variant="outlined"
+                                        onChange={(event) => setTimeTable(changeHours(event.target.value, index))} required />
+                                </div>
+                                <div className="col-12 col-sm-2 alignInput">
+                                    <TextField
+                                        id="outlined-helperText"
+                                        label='Minutos'
+                                        defaultValue={register.dateTime.getMinutes().toString().padStart(2, '0')}
+                                        variant="outlined"
+                                        onChange={(event) => setTimeTable(changeMinutes(event.target.value, index))} required />
+                                </div>
+                            </div>
+                        )}
+                    </form>
+                }
+            </div>
+            <div>
+                {timeTable.length === 0 ? <button onClick={() => startWorking()}>Empezar a trabajar</button>
+                    : buttonCase(timeTable[timeTable.length - 1].type)}
             </div>
         </div>
     );
