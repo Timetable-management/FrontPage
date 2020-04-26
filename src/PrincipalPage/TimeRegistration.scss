@@ -29,16 +29,37 @@
             align-items: center;
             justify-content: center;
 
+            & .iconTimeRegistration{
+                margin-right: 7px;
+            }
+
+            & .smallTrashIcon {
+                display: none;
+
+                @media screen and (max-width: 575px) {
+                    display: block;
+                }
+            }
+
+            & .bigTrashIcon {
+                display: block;
+
+                @media screen and (max-width: 575px) {
+                    display: none;
+                }
+            }
+
             & .alignInput {
                 justify-content: center;
                 display: flex;
-                @media screen and (max-width: 575px){
+
+                @media screen and (max-width: 575px) {
                     margin: 10px 0;
                 }
             }
 
             & .typeRegistration {
-                min-width: 200px;
+                min-width: 190px;
                 margin-bottom: 0 !important;
             }
         }
