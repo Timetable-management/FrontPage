@@ -1,0 +1,76 @@
+.NewToDoComponent {
+    & p {
+        margin-bottom: 0;
+    }
+
+    & .closeButton {
+        justify-content: flex-end;
+        margin: 10px;
+    }
+
+    & .hoursAndDate {
+        & input {
+            width: 60px;
+            text-align: center;
+            border: 1px solid #3F51B5;
+            border-radius: 13px;
+            padding: 5px 10px;
+        }
+
+        & .boxDate {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+
+            & .labelDate {
+                display: flex;
+                align-items: center;
+                margin: 10px 0;
+            }
+
+            & .date {
+                display: flex;
+                align-items: center;
+
+                & p {
+                    margin: 0 10px;
+                    font-size: x-large;
+                }
+            }
+        }
+    }
+
+    & .title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        & .labelTitulo {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        & .titleInput {
+            & input {
+                width: 100%;
+                text-align: center;
+                border: 1px solid #3F51B5;
+                border-radius: 13px;
+                padding: 5px 10px;
+            }
+        }
+    }
+
+    & .textArea {
+        margin: 10px 0;
+
+        & textarea {
+            width: 100%;
+            border: 1px solid #3F51B5;
+            border-radius: 13px;
+            padding: 5px 10px;
+        }
+    }
+
+}

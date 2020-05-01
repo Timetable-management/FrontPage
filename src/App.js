@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import './App.scss';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Home from './LogIn/Home';
 import UserPage from './PrincipalPage/UserPage';
 import PrincipalPage from './PrincipalPage/PrincipalPage';
 import MyContext from './context';
+import NewToDo from './PrincipalPage/NewToDo/NewToDo';
 
 function App() {
 
-  const [hooksState, setHooksState] = useState({
-    
-  });
-
-  const stateAndFunction = {hooksState, setHooksState}
+  const [hooksState, setHooksState] = useState({});
+  //Para poder exportar el estado y la funcion que lo cambia desde cualquier componente mediante contexto:
+  const stateAndFunction = {hooksState, setHooksState}; 
 
   return (
     <MyContext.Provider value={stateAndFunction}>
@@ -21,6 +20,7 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/employee" component={UserPage} />
           <Route path="/principalPage" component={PrincipalPage}/>
+          <Route path ="/newToDo" component={NewToDo}/>
         </Router>
       </div>
     </MyContext.Provider>
