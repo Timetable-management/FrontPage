@@ -51,36 +51,29 @@ function NewToDo() {
     const changeDate = (dateValue) => {
         const object = newItem;
         object.date.setDate(dateValue);
-        console.log(newItem.date);
         return object;
     }
     //Edit time -> Function to change the Month of an input
     const changeMonth = (monthValue) => {
         const object = newItem;
         object.date.setMonth(monthValue);
-        console.log(newItem.date);
         return object;
     }
     //Edit time -> Function to change the FullYear of an input
     const changeFullYear = (fullYearValue) => {
         const object = newItem;
         object.date.setFullYear(fullYearValue);
-        console.log(newItem.date);
         return object;
     }
     //Edit the Title
     const changeTitle = (valueTitle) => {
         const object = newItem;
-        console.log(valueTitle)
         object.title = valueTitle;
-        console.log(object)
         return object;
     }
     const changeNote = (valueNote) => {
         const object = newItem;
-        console.log(valueNote)
         object.note = valueNote;
-        console.log(object)
         return object;
     }
 
@@ -134,7 +127,7 @@ function NewToDo() {
     const [searchName, setSearchName] = useState();
     //Funcion para buscar las personas con el mismo nombre que buscamos
     const resultsNames = (searchName) => {
-        const result = allUsersJson.results.filter(persona => persona.name.first.toLocaleLowerCase().includes(searchName.toLocaleLowerCase()) || persona.name.last.toLocaleLowerCase().includes(searchName.toLocaleLowerCase()))
+        const result = allUsersJson.results.filter(persona => (persona.name.first + ' ' + persona.name.last).toLocaleLowerCase().includes(searchName.toLocaleLowerCase()) && !newItem.participants.some(participant => JSON.stringify(participant.name) == JSON.stringify(persona.name)))
         return result;
     }
     //Funcion para añadi persona encontrada a nuestro objeto newItem
@@ -210,12 +203,12 @@ function NewToDo() {
                         </div>
                         <div className="col-12 col-md-10 titleInput">
                             <input
-                                type='text' onChange={((event) => setNewItem(changeTitle(event.target.value)))} />
+                                type='text' onChange={(event) => setNewItem(changeTitle(event.target.value))} />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-12 textArea">
-                            <TextareaAutosize aria-label="empty textarea" placeholder="¿Sobre qué trata la reunión?" onChange={((event) => setNewItem(changeNote(event.target.value)))} />
+                            <TextareaAutosize aria-label="empty textarea" placeholder="¿Sobre qué trata la reunión?" onChange={(event) => setNewItem(changeNote(event.target.value))} />
                         </div>
                     </div>
                     <div className="row">
