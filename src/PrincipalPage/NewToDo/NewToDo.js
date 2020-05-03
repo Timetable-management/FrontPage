@@ -131,16 +131,12 @@ function NewToDo() {
         return result;
     }
     //Funcion para añadi persona encontrada a nuestro objeto newItem
-    const addParticipant = (persona) =>{
-        const object = newItem;
-        object.participants.push(persona);
-        return object;
+    const addParticipant = (persona) => {
+        return { ...newItem, participants: [...newItem.participants, persona] }
     }
     //Funcion para eliminar una persona invitada
-    const deleteParticipant = (index) =>{
-        const object = newItem;
-        object.participants.splice(index, 1);
-        return object;
+    const deleteParticipant = (persona) => {
+        return { ...newItem, participants: newItem.participants.filter(item => item != persona) }
     }
 
     return (
@@ -157,13 +153,11 @@ function NewToDo() {
                                 <div className="col-12 col-md-7 date">
                                     <input
                                         name='Hora'
-                                        type='number'
                                         defaultValue={newItem.date.getHours().toString().padStart(2, '0')}
                                         onChange={(event) => setNewItem(changeHours(event.target.value))} required />
                                     <p>:</p>
                                     <input
                                         name='Minutos'
-                                        type='number'
                                         defaultValue={newItem.date.getMinutes().toString().padStart(2, '0')}
                                         onChange={(event) => setNewItem(changeMinutes(event.target.value))} required />
                                 </div>
@@ -177,19 +171,16 @@ function NewToDo() {
                                 <div className="col-12 col-md-8 date">
                                     <input
                                         label='Día'
-                                        type='number'
                                         defaultValue={newItem.date.getDate()}
                                         onChange={(event) => setNewItem(changeDate(event.target.value))} required />
                                     <p>/</p>
                                     <input
                                         label='Mes'
-                                        type='number'
                                         defaultValue={(newItem.date.getMonth() + 1)}
                                         onChange={(event) => setNewItem(changeMonth(event.target.value - 1))} required />
                                     <p>/</p>
                                     <input
                                         label='Año'
-                                        type='number'
                                         defaultValue={newItem.date.getFullYear()}
                                         onChange={(event) => setNewItem(changeFullYear(event.target.value))} required />
                                     <span style={{ margin: '0 10px' }}>{calendarIcon}</span>
@@ -229,25 +220,25 @@ function NewToDo() {
                         {colorTask.map(circle => <div className="colorTask" style={{ backgroundColor: `${circle.color}` }}></div>)}
                     </div>
                     <div className="row">
-                        <div className="col-12 col-md-6">
-                            <div className="row">
+                        <div className="col-12 col-md-6  paddingDeletePersons ">
+                            <div className="labelPersonasInvitadas">
                                 <p>Personas invitadas:</p>
                             </div>
-                            <div className="row">
-                                <div className="col-12">
-                                    {newItem.participants.map((persona, index) =>
-                                        <div key={index} className="row searchPersons alignItems" onClick={() => setNewItem(deleteParticipant(index))}>
-                                            <div className="col-9 alignItems ">
-                                                <img className="avatar" src={`${persona.picture.thumbnail}`} alt="avatarImg" />
-                                                <p>{`${persona.name.first} ${persona.name.last}`}</p>
-                                            </div>
-                                            <div className="col-3 displayEnd">{deleteUser}</div>
-                                        </div>
-                                    )}
+
+                            {newItem.participants.length === 0
+                                ? <p className="deletePersons" style={{textAlign: 'center'}}>Aún no hay asistentes</p>
+                            : newItem.participants.map((persona, index) =>
+                                <div key={index} className="row deletePersons alignItems" onClick={() => setNewItem(deleteParticipant(persona))}>
+                                    <div className="col-9 alignItems ">
+                                        <img className="avatar" src={`${persona.picture.thumbnail}`} alt="avatarImg" />
+                                        <p>{`${persona.name.first} ${persona.name.last}`}</p>
+                                    </div>
+                                    <div className="col-3 displayEnd">{deleteUser}</div>
                                 </div>
-                            </div>
+                            )}
                         </div>
-                        <div className="col-12 col-md-6">
+
+                        <div className="col-12 col-md-6 paddingFindPersons">
                             <div>
                                 <input className="searchPersonInput" type="text" onChange={(event) => setSearchName(event.target.value)} />
                                 {search}

@@ -3,6 +3,10 @@
         margin-bottom: 0;
     }
 
+    & .row {
+        margin-bottom: 10px !important;
+    }
+
     & .justifyCenter {
         display: flex;
         justify-content: center;
@@ -16,6 +20,10 @@
     & .displayEnd {
         display: flex;
         justify-content: flex-end;
+    }
+
+    & .paddingCero {
+        padding: 0;
     }
 
     & .closeButton {
@@ -126,23 +134,44 @@
         margin: 10px;
     }
 
-    & .searchPersonInput {
-        border: none;
-        border-bottom: 1px solid #3F51B5;
-        width: 92%;
-        margin-bottom: 4px;
+    & .paddingFindPersons {
+        & .labelPersonasInvitadas {
+            display: flex;
+            align-items: center;
+            margin: 10px 10px 10px 0;
+            padding: 0;
+        }
+
+        & .searchPersonInput {
+            border: none;
+            border-bottom: 1px solid #3F51B5;
+            width: 93%;
+            margin-bottom: 4px;
+        }
+
+        & .searchPersons:hover {
+            background-color: rgba(32, 143, 32, 0.315);
+        }
     }
 
-    & .searchPersons:hover {
-        background-color: rgba(32, 143, 32, 0.315);
+    & .paddingDeletePersons {
+        & .labelPersonasInvitadas {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        & .deletePersons:hover {
+            background-color: rgba(143, 32, 32, 0.315);
+        }
     }
 
-    & .searchPersons {
+    & .searchPersons,
+    .deletePersons {
         border-radius: 50px;
         border: 1px solid #3F51B5;
         padding: 4px;
         margin: 4px 0;
-
 
         & .avatar {
             background-position: center;
@@ -156,6 +185,4 @@
             margin-right: 14px;
         }
     }
-
-
 }
