@@ -18,6 +18,12 @@ function NewToDo() {
     const contextInfo = useContext(MyContext); //Global Context
 
     const date = new Date();//To get actual minutes and seconds
+    const [choosenDate, setChoosenDate] = useState({
+        dia: date.getDate(),
+        mes: date.getMonth(),
+        año: date.getFullYear()
+    })
+
     const [newItem, setNewItem] = useState({
         date: date,
         title: '',
@@ -36,45 +42,33 @@ function NewToDo() {
 
     //Edit time -> Function to change the hours of an input
     const changeHours = (hourValue) => {
-        const object = newItem;
-        object.date.setHours(hourValue);
-        return object;
+        const newDate = newItem.date;
+        newDate.setHours(hourValue);
+        setNewItem({ ...newItem, date: newDate });
     }
 
     //Edit time -> Function to change the minutes of an input
     const changeMinutes = (minuteValue) => {
-        const object = newItem;
-        object.date.setMinutes(minuteValue);
-        return object;
+        const newDate = newItem.date;
+        newDate.setMinutes(minuteValue);
+        setNewItem({ ...newItem, date: newDate });
     }
-    //Edit time -> Function to change the Date of an input
-    const changeDate = (dateValue) => {
-        const object = newItem;
-        object.date.setDate(dateValue);
-        return object;
-    }
-    //Edit time -> Function to change the Month of an input
-    const changeMonth = (monthValue) => {
-        const object = newItem;
-        object.date.setMonth(monthValue);
-        return object;
-    }
-    //Edit time -> Function to change the FullYear of an input
-    const changeFullYear = (fullYearValue) => {
-        const object = newItem;
-        object.date.setFullYear(fullYearValue);
-        return object;
-    }
+
+    useEffect(() => {
+        const newDate = newItem.date;
+        newDate.setDate(choosenDate.dia);
+        newDate.setMonth(choosenDate.mes);
+        newDate.setFullYear(choosenDate.año);
+        setNewItem({ ...newItem, date: newDate });
+    }, [choosenDate])
+
+
     //Edit the Title
     const changeTitle = (valueTitle) => {
-        const object = newItem;
-        object.title = valueTitle;
-        return object;
+        return { ...newItem, title: valueTitle }
     }
     const changeNote = (valueNote) => {
-        const object = newItem;
-        object.note = valueNote;
-        return object;
+        return { ...newItem, note: valueNote }
     }
 
     //Priority Buttons
@@ -102,9 +96,9 @@ function NewToDo() {
     ];
     //Select Priority Buttons
     const selectPriority = (level) => {
-        const object = newItem;
-        object.priority = level;
-        return object;
+        let object = newItem.priority;
+        object = level;
+        setNewItem({...newItem, priority: object});
     }
 
     //Colores de la cita
@@ -154,12 +148,12 @@ function NewToDo() {
                                     <input
                                         name='Hora'
                                         defaultValue={newItem.date.getHours().toString().padStart(2, '0')}
-                                        onChange={(event) => setNewItem(changeHours(event.target.value))} required />
+                                        onChange={(event) => changeHours(event.target.value)} required />
                                     <p>:</p>
                                     <input
                                         name='Minutos'
                                         defaultValue={newItem.date.getMinutes().toString().padStart(2, '0')}
-                                        onChange={(event) => setNewItem(changeMinutes(event.target.value))} required />
+                                        onChange={(event) => changeMinutes(event.target.value)} required />
                                 </div>
                             </div>
                         </div>
@@ -171,18 +165,21 @@ function NewToDo() {
                                 <div className="col-12 col-md-8 date">
                                     <input
                                         label='Día'
+                                        type='number'
                                         defaultValue={newItem.date.getDate()}
-                                        onChange={(event) => setNewItem(changeDate(event.target.value))} required />
+                                        onChange={(event) => setChoosenDate({ ...choosenDate, dia: event.target.value })} required />
                                     <p>/</p>
                                     <input
                                         label='Mes'
+                                        type='number'
                                         defaultValue={(newItem.date.getMonth() + 1)}
-                                        onChange={(event) => setNewItem(changeMonth(event.target.value - 1))} required />
+                                        onChange={(event) => setChoosenDate({ ...choosenDate, mes: event.target.value - 1 })} required />
                                     <p>/</p>
                                     <input
                                         label='Año'
+                                        type='number'
                                         defaultValue={newItem.date.getFullYear()}
-                                        onChange={(event) => setNewItem(changeFullYear(event.target.value))} required />
+                                        onChange={(event) => setChoosenDate({ ...choosenDate, año: event.target.value })} required />
                                     <span style={{ margin: '0 10px' }}>{calendarIcon}</span>
                                 </div>
                             </div>
@@ -209,7 +206,7 @@ function NewToDo() {
                         <div className="col-8 priorityLevels">
                             <hr className="priorityLine" />
                             {priorityButtons.map((priorityButton, index) =>
-                                <div key={index} className="priorityButtons" style={{ backgroundColor: `${priorityButton.color}` }} onClick={() => setNewItem(selectPriority(priorityButton.level))}>{priorityButton.level}</div>
+                                <div key={index} className={priorityButton.level <= newItem.priority ? 'priorityButtonsSelected' : 'priorityButtons'} style={{ backgroundColor: `${priorityButton.color}` }} onClick={() => selectPriority(priorityButton.level)}>{priorityButton.level}</div>
                             )}
                         </div>
                     </div>
@@ -226,16 +223,16 @@ function NewToDo() {
                             </div>
 
                             {newItem.participants.length === 0
-                                ? <p className="deletePersons" style={{textAlign: 'center'}}>Aún no hay asistentes</p>
-                            : newItem.participants.map((persona, index) =>
-                                <div key={index} className="row deletePersons alignItems" onClick={() => setNewItem(deleteParticipant(persona))}>
-                                    <div className="col-9 alignItems ">
-                                        <img className="avatar" src={`${persona.picture.thumbnail}`} alt="avatarImg" />
-                                        <p>{`${persona.name.first} ${persona.name.last}`}</p>
+                                ? <p className="deletePersons" style={{ textAlign: 'center' }}>Aún no hay asistentes</p>
+                                : newItem.participants.map((persona, index) =>
+                                    <div key={index} className="row deletePersons alignItems" onClick={() => setNewItem(deleteParticipant(persona))}>
+                                        <div className="col-9 alignItems ">
+                                            <img className="avatar" src={`${persona.picture.thumbnail}`} alt="avatarImg" />
+                                            <p>{`${persona.name.first} ${persona.name.last}`}</p>
+                                        </div>
+                                        <div className="col-3 displayEnd">{deleteUser}</div>
                                     </div>
-                                    <div className="col-3 displayEnd">{deleteUser}</div>
-                                </div>
-                            )}
+                                )}
                         </div>
 
                         <div className="col-12 col-md-6 paddingFindPersons">

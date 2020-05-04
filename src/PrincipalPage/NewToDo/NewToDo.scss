@@ -110,7 +110,7 @@
         align-items: center;
 
         & .priorityLine {
-            height: 2px;
+            height: 1px;
             background-color: #3F51B5;
             width: 100%;
             z-index: -1;
@@ -123,6 +123,14 @@
             padding: 5px 12px;
             color: #3F51B5;
             border: 1px solid #3F51B5;
+        }
+        & .priorityButtonsSelected {
+            border-radius: 50px;
+            padding: 5px 12px;
+            color: #3F51B5;
+            border: 3px solid #3F51B5;
+            font-weight: bold;
+            font-size: large;
         }
     }
 
