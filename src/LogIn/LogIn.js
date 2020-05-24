@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -12,6 +12,8 @@ import Input from '@material-ui/core/Input';
 import clsx from 'clsx';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import {Link} from 'react-router-dom';
+import MyContext from '../context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,17 +28,51 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignIn() {
+
+  //Global Context
+  const contextInfo = useContext(MyContext);
+  const hooksState = contextInfo.hooksState;
+  const setHooksState = contextInfo.setHooksState;
+
   const classes = useStyles();
   //ver/ocultar contraseña
   const [viewPassword, setViewPassword] = useState(false);
   const eye = <FontAwesomeIcon icon={faEye} size="xs" />
   const eyeSlash = <FontAwesomeIcon icon={faEyeSlash} size="xs" />
+  //Respuesta del fetch:
+  const [fetchData, setFetchData] = useState([]);
 
   //Boton submit del formulario
-  const submitInfo = (event) => {
+  //Boton submit del formulario
+  const submitInfo = async (event) => {
     event.preventDefault();
-    console.log('funciona')
+
+    await fetch('https://timetable-managment-backend.herokuapp.com/login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then((response) => {
+        return response.json()
+      })
+      .then((responseJson) => {
+        setFetchData(responseJson);
+        return responseJson;
+      })
+      .then((errorsArray) => {
+        console.log(errorsArray.usuario)
+        if ((errorsArray.errors || []).length === 0) {
+          document.getElementById('buttonToRegister').click();
+          setHooksState({
+            currentUser: errorsArray.usuario
+          });
+        }
+      })
   }
+
   //Estado con los datos del formulario
   const [data, updateData] = useState({
     correo: "",
@@ -86,6 +122,14 @@ function SignIn() {
           </div>
         </div>
       </form>
+      <Link to="/principalPage" id="buttonToRegister" style={{ display: 'none' }}>boton transparente</Link>
+      <div className="errores">
+        {((fetchData || {}).errors || []).length !== 0 && fetchData.errors.map(error =>
+          <div>
+            <p>{error.msg}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

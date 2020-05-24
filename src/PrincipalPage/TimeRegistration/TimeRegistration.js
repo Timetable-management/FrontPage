@@ -1,21 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import clsx from 'clsx';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import { faClock, faTrashAlt, faBriefcase, faMugHot, faHome } from '@fortawesome/free-solid-svg-icons';
 import MyContext from '../../context';
 import './TimeRegistration.scss';
-import PropTypes from 'prop-types';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-
+import Icons from '../../Iconos/Icons';
 
 function TimeRegistration() {
 
@@ -36,15 +25,6 @@ function TimeRegistration() {
         },
     }));
     const classes = useStyles(); //MaterialUI classes
-    const clock = <FontAwesomeIcon icon={faClock} size="2x" color="#3F51B5" /> //Clock Icon
-    const trash = <FontAwesomeIcon icon={faTrashAlt} size="md" color="rgb(172, 24, 36)" /> //Trash Icon
-    const startWork = <FontAwesomeIcon icon={faBriefcase} size="md" color="#9573DA" /> //StartWork Icon
-    const pause = <FontAwesomeIcon icon={faMugHot} size="md" color="#73DAC9" /> //Pause Icon
-    const finishWork = <FontAwesomeIcon icon={faHome} size="md" color="#DA7373" /> //FinishWork Icon
-
-    const buttonStartWork = <FontAwesomeIcon icon={faBriefcase} size="md" color="#ffffff" /> //StartWork Icon Button
-    const buttonPause = <FontAwesomeIcon icon={faMugHot} size="md" color="#ffffff" /> //Pause Icon Button
-    const buttonFinishWork = <FontAwesomeIcon icon={faHome} size="md" color="#ffffff" /> //FinishWork Icon Button
 
     //GLOBAL Cases Types
     const type = Object.freeze({
@@ -71,13 +51,13 @@ function TimeRegistration() {
     const iconType = (type) => {
         switch (type) {
             case 0:
-                return startWork;
+                return Icons.startWork;
             case 1:
-                return finishWork;
+                return Icons.finishWork;
             case 2:
-                return pause;
+                return Icons.pause;
             case 3:
-                return startWork;
+                return Icons.startWork;
         }
     }
 
@@ -88,27 +68,27 @@ function TimeRegistration() {
                 return (
                     <div className="row">
                         <div className="col-12 justifyCenter">
-                            <button onClick={() => startPause()}>Pausa &nbsp; {buttonPause}</button>
+                            <button onClick={() => startPause()}>Pausa &nbsp; {Icons.buttonPause}</button>
                         </div>
                         <div className="col-12 justifyCenter">
-                            <button className="endWorkButton" onClick={() => endWork()}>Fin de trabajo &nbsp; {buttonFinishWork}</button>
+                            <button className="endWorkButton" onClick={() => endWork()}>Fin de trabajo &nbsp; {Icons.buttonFinishWork}</button>
                         </div>
                     </div>
                 )
             case 2:
                 return (
                     <div className="col-12 justifyCenter">
-                        <button onClick={() => endPause()}>Fin de pausa &nbsp; {buttonStartWork}</button>
+                        <button onClick={() => endPause()}>Fin de pausa &nbsp; {Icons.buttonStartWork}</button>
                     </div>
                 )
             case 3:
                 return (
                     <div className="row">
                         <div className="col-12 justifyCenter">
-                            <button onClick={() => startPause()}>Pausa &nbsp; {buttonPause}</button>
+                            <button onClick={() => startPause()}>Pausa &nbsp; {Icons.buttonPause}</button>
                         </div>
                         <div className="col-12 justifyCenter">
-                            <button className="endWorkButton" onClick={() => endWork()}>Fin de trabajo &nbsp; {buttonFinishWork}</button>
+                            <button className="endWorkButton" onClick={() => endWork()}>Fin de trabajo &nbsp; {Icons.buttonFinishWork}</button>
                         </div>
                     </div>
                 )
@@ -202,10 +182,10 @@ function TimeRegistration() {
     //Function to display the button trash depending on the input type
     const showTrashButton = (type) => {
         if (timeTable.length > 1 && type !== 3 && type !== 0) {
-            return trash;
+            return Icons.trash;
         }
         if (timeTable.length === 1) {
-            return trash;
+            return Icons.trash;
         }
     }
 
@@ -223,13 +203,13 @@ function TimeRegistration() {
     return (
         <div className="container-fluid timeRegistration">
             <div className="row titleSection">
-                <div className="clockIcon">{clock}</div>
+                <div className="clockIcon">{Icons.clock}</div>
                 <h5>GESTIÓN DE HORAS:</h5>
             </div>
             <div className="timeForm">
                 {timeTable.length === 0 ? (<div>
                     <p>Aun no tienes registros</p>
-                    <button onClick={() => startWorking()}>Empezar a trabajar &nbsp; {buttonStartWork}</button>
+                    <button onClick={() => startWorking()}>Empezar a trabajar &nbsp; {Icons.buttonStartWork}</button>
                 </div>)
                     : (<form className={classes.root} noValidate autoComplete="off" style={{ display: "flex", flexDirection: "column" }}>
                         {timeTable.map((register, index) =>

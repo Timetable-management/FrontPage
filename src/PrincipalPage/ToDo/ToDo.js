@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {Link} from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
+import Icons from '../../Iconos/Icons';
 import MyContext from '../../context';
 import './ToDo.scss';
 
@@ -12,8 +11,6 @@ function ToDo() {
       const hooksState = contextInfo.hooksState;
       const setHooksState = contextInfo.setHooksState;
 
-    const addTask = <FontAwesomeIcon icon={faPlusSquare} size="lg" color="#3F51B5" /> //AddTask Icon
-
     //Here we are going to push the to do tasks --> CONTEXT
     const [toDoList, setToDoList] = useState([])
 
@@ -23,13 +20,12 @@ function ToDo() {
     }
     // useEffect(() => { updateComponentToContext() }, [toDoList]);
 
-
     return (
         <div className="container-fluid toDoComponent">
             <div className="row">
                 <div className="col-12 col-md-6 listToDo">
                     <div className="row">
-                        <h5>TAREAS POR HACER:</h5><Link to ='/newToDo'>{addTask}</Link>
+                        <h5>TAREAS POR HACER:</h5><Link to ='/newToDo'>{Icons.addTask}</Link>
                     </div>
                     <div className="timeForm">
                         {toDoList.length === 0 ? (<div>
@@ -41,7 +37,7 @@ function ToDo() {
                 </div>
                 <div className="col-12 col-md-6 listDone">
                     <div className="row">
-                        <h5>TAREAS HECHAS:</h5>{addTask}
+                        <h5>TAREAS HECHAS:</h5>{Icons.addTask}
                     </div>
                     <div className="timeForm">
                         {toDoList.length === 0 ? (<div>

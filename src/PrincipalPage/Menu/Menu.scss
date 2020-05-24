@@ -1,0 +1,38 @@
+.Menu {
+    width: 100vw;
+    margin-bottom: 1rem;
+
+    & #myNavBar {
+        background-color: #3F51B5 !important;
+        color: #fff;
+
+        & .logo {
+            width: '1rem';
+            height: '1rem';
+        }
+
+        & .navbar-collapse {
+
+            & .navbar-nav {
+                text-align: end;
+
+                & .nav-item {
+                    margin-right: 1rem;
+
+                    & .nav-link {
+                        color: #fff !important;
+
+                        & svg {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+        }
+
+        & #myToggler {
+            color: rgb(255, 255, 255) !important;
+            stroke-linecap: round;
+        }
+    }
+}

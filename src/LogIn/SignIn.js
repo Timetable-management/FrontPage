@@ -40,13 +40,13 @@ function SignIn() {
 
   //Estado con los datos del formulario
   const [data, updateData] = useState({
-    nombre: "ssss",
-    primerApellido: "sss",
-    segundoApellido: "sss",
-    correo: "ssss@",
-    cargo: "s",
-    contraseña: "1234567",
-    repeatPassword: "1234567"
+    nombre: "",
+    primerApellido: "",
+    segundoApellido: "",
+    correo: "",
+    cargo: "",
+    contraseña: "",
+    repeatPassword: ""
   })
 
   //ver/ocultar contraseña
