@@ -7,18 +7,21 @@ import './ToDo.scss';
 
 function ToDo() {
 
-    const addTask = <FontAwesomeIcon icon={faPlusSquare} size="lg" color="#3F51B5" /> //AddTask Icon
+      //Global Context
+      const contextInfo = useContext(MyContext);
+      const hooksState = contextInfo.hooksState;
+      const setHooksState = contextInfo.setHooksState;
 
-    const contextInfo = useContext(MyContext); //Global Context
+    const addTask = <FontAwesomeIcon icon={faPlusSquare} size="lg" color="#3F51B5" /> //AddTask Icon
 
     //Here we are going to push the to do tasks --> CONTEXT
     const [toDoList, setToDoList] = useState([])
 
     //Copy the toDoList state to the context every time that this state change
     const updateComponentToContext = () => {
-        contextInfo.setHooksState({ ...contextInfo.hooksState, toDoList })
+        setHooksState({ ...hooksState, toDoList })
     }
-    useEffect(() => { updateComponentToContext() }, [toDoList]);
+    // useEffect(() => { updateComponentToContext() }, [toDoList]);
 
 
     return (

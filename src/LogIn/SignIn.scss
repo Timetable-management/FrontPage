@@ -7,5 +7,17 @@
     & .alert {
         font-size: x-small !important;
     }
+    & .makeStyles-root-151{
+        display: flex;
+        justify-content: center;
+    }
+    & .errores{
+        background-color: rgba(255, 0, 0, 0.102);
+        border-radius: 20px;
+        & p{
+            padding: 5px 23px;
+            margin: 0;
+        }
+    }
 }
 

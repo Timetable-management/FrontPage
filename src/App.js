@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Home from './LogIn/Home';
-import UserPage from './PrincipalPage/UserPage';
 import PrincipalPage from './PrincipalPage/PrincipalPage';
 import MyContext from './context';
 import NewToDo from './PrincipalPage/NewToDo/NewToDo';
@@ -18,7 +17,6 @@ function App() {
       <div className="App">
         <Router>
           <Route path="/" exact component={Home} />
-          <Route path="/employee" component={UserPage} />
           <Route path="/principalPage" component={PrincipalPage}/>
           <Route path ="/newToDo" component={NewToDo}/>
         </Router>

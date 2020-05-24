@@ -4,6 +4,14 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import './LogIn.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Input from '@material-ui/core/Input';
+import clsx from 'clsx';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
 
 function SignIn() {
   const classes = useStyles();
+  //ver/ocultar contraseña
+  const [viewPassword, setViewPassword] = useState(false);
+  const eye = <FontAwesomeIcon icon={faEye} size="xs" />
+  const eyeSlash = <FontAwesomeIcon icon={faEyeSlash} size="xs" />
 
   //Boton submit del formulario
   const submitInfo = (event) => {
@@ -41,9 +53,25 @@ function SignIn() {
               onChange={(event) => updateData({ ...data, correo: event.target.value })} />
           </div>
           <div className="col-12">
-            <TextField id="contraseña" label="Contraseña" type="text" name="contraseña"
-              value={data.contraseña}
-              onChange={(event) => updateData({ ...data, contraseña: event.target.value })} />
+            <FormControl className={clsx(classes.margin, classes.textField)}>
+              <InputLabel htmlFor="standard-adornment-password">Contraseña</InputLabel>
+              <Input
+                value={data.contraseña}
+                id="contraseña"
+                name="contraseña"
+                type={viewPassword ? 'text' : 'password'}
+                onChange={(event) => updateData({ ...data, contraseña: event.target.value })}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setViewPassword(!viewPassword)}
+                    >
+                      {viewPassword ? eye : eyeSlash}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
           </div>
           < div className = "col-12 aligItems" >
             <Button

@@ -19,6 +19,11 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 function TimeRegistration() {
 
+    //Global Context
+    const contextInfo = useContext(MyContext);
+    const hooksState = contextInfo.hooksState;
+    const setHooksState = contextInfo.setHooksState;
+
     //Material UI styles
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -40,8 +45,6 @@ function TimeRegistration() {
     const buttonStartWork = <FontAwesomeIcon icon={faBriefcase} size="md" color="#ffffff" /> //StartWork Icon Button
     const buttonPause = <FontAwesomeIcon icon={faMugHot} size="md" color="#ffffff" /> //Pause Icon Button
     const buttonFinishWork = <FontAwesomeIcon icon={faHome} size="md" color="#ffffff" /> //FinishWork Icon Button
-
-    const contextInfo = useContext(MyContext); //Global Context
 
     //GLOBAL Cases Types
     const type = Object.freeze({
@@ -144,9 +147,9 @@ function TimeRegistration() {
     const [totalTimeWorked, setTotalTimeWorked] = useState('00:00:00')
     //Copy the timeTable state to the context every time that this state change
     const updateComponentToContext = () => {
-        contextInfo.setHooksState({ ...contextInfo.hooksState, timeTable })
+        setHooksState({ ...hooksState, timeTable })
     }
-    useEffect(() => { updateComponentToContext() }, [timeTable]);
+    // useEffect(() => { updateComponentToContext() }, [timeTable]);
 
     //Edit time -> Function to change the hours of an input
     const changeHours = (hourValue, index) => {

@@ -10,12 +10,16 @@ import allUsersJson from '../../apiUsers.json';
 
 function NewToDo() {
 
+    //Global Context
+    const contextInfo = useContext(MyContext);
+    const hooksState = contextInfo.hooksState;
+    const setHooksState = contextInfo.setHooksState;
+
     const closeIcon = <FontAwesomeIcon icon={faTimes} size="lg" color="#3F51B5" /> //AddTask Icon
     const calendarIcon = <FontAwesomeIcon icon={faCalendarAlt} size="lg" color="#3F51B5" /> //calendar Icon
     const addUser = <FontAwesomeIcon icon={faUserPlus} size="lg" color="#62B53F" /> //addUser Icon
     const deleteUser = <FontAwesomeIcon icon={faUserTimes} size="lg" color="#E74B4B" /> //addUser Icon
     const search = <FontAwesomeIcon icon={faSearch} size="lg" color="#3F51B5" /> //Search Icon
-    const contextInfo = useContext(MyContext); //Global Context
 
     const date = new Date();//To get actual minutes and seconds
     const [choosenDate, setChoosenDate] = useState({
@@ -35,10 +39,10 @@ function NewToDo() {
     })
 
     //Copy the NewToDoList state to the context every time that this state change
-    const updateComponentToContext = () => {
-        contextInfo.setHooksState({ ...contextInfo.hooksState, newItem });
-    }
-    useEffect(() => { updateComponentToContext() }, [newItem]);
+    // const updateComponentToContext = () => {
+    //     contextInfo.setHooksState({ ...contextInfo.hooksState, newItem });
+    // }
+    // useEffect(() => { updateComponentToContext() }, [newItem]);
 
     //Edit time -> Function to change the hours of an input
     const changeHours = (hourValue) => {

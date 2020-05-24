@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import TimeRegistration from './TimeRegistration/TimeRegistration';
-import ToDo from './ToDo/ToDo'
+import ToDo from './ToDo/ToDo';
+import MyContext from '../context';
 
 function PrincipalPage() {
+
+     //Global Context
+     const contextInfo = useContext(MyContext);
+     const hooksState = contextInfo.hooksState;
+     const setHooksState = contextInfo.setHooksState;
+
     return (
         <div className="container-fluid">
             <div className="row">
